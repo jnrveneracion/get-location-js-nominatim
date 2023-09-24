@@ -13,7 +13,7 @@
       .then(response => response.json())
       .then(data => {
         const city = extractCityFromGeocodingData(data);
-        locationDiv.textContent = `City: ${city}`;
+        locationDiv.textContent = `Location: ${city}`;
         console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
 
       })
