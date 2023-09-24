@@ -13,7 +13,9 @@
       .then(response => response.json())
       .then(data => {
         const city = extractCityFromGeocodingData(data);
-        locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}, City: ${city}`;
+        locationDiv.textContent = `City: ${city}`;
+        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+
       })
       .catch(error => {
         console.error('Error retrieving location details:', error);
