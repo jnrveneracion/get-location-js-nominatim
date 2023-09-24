@@ -1,0 +1,46 @@
+<button id="location-button">Get Location</button>
+<div id="location"></div>
+
+<script>
+  const locationButton = document.getElementById('location-button');
+  const locationDiv = document.getElementById('location');
+
+  function handleSuccess(position) {
+    const { latitude, longitude } = position.coords;
+
+    // Call the Nominatim API to retrieve the location details
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`)
+      .then(response => response.json())
+      .then(data => {
+        const city = extractCityFromGeocodingData(data);
+        locationDiv.textContent = `Latitude: ${latitude}, Longitude: ${longitude}, City: ${city}`;
+      })
+      .catch(error => {
+        console.error('Error retrieving location details:', error);
+        locationDiv.textContent = 'Error retrieving location details';
+      });
+  }
+
+  function extractCityFromGeocodingData(data) {
+    if (data.address && data.address.city) {
+      return data.address.city;
+    }
+    return 'Unknown';
+  }
+
+  function handleError(error) {
+    console.error('Error retrieving location:', error);
+    locationDiv.textContent = 'Error retrieving location';
+  }
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(handleSuccess, handleError);
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      locationDiv.textContent = 'Geolocation is not supported';
+    }
+  }
+
+  locationButton.addEventListener('click', getLocation);
+</script>
